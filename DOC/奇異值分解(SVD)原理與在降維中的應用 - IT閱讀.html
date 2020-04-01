@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://www.itread01.com/content/1545298204.html -->
+<html class="js" lang="zh-TW" prefix="og: http://ogp.me/ns#"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <title>奇異值分解(SVD)原理與在降維中的應用 - IT閱讀</title>
+<script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/17518.js.下載"></script><script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/17523.js.下載"></script><script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/17812.js.下載"></script><script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/17521.js.下載"></script><script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/17522.js.下載"></script><script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/17811.js.下載"></script><script>document.documentElement.className = document.documentElement.className.replace("no-js","js");</script>
+<link href="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/atom-one-dark.min.css" rel="stylesheet">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta name="referrer" content="never">
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="hueman-main-style-css" href="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/main.info.css" type="text/css" media="all">
+<link href="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/prettify.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/prettify(1).css">
+<style id="hueman-main-style-inline-css" type="text/css">
+body { font-family:'Source Sans Pro', Arial, sans-serif;font-size:1.00rem }@media only screen and (min-width: 720px) {
+        .nav > li { font-size:1.00rem; }
+      }::selection { background-color: #fca61b; }
+::-moz-selection { background-color: #fca61b; }a,.themeform label .required,#flexslider-featured .flex-direction-nav .flex-next:hover,#flexslider-featured .flex-direction-nav .flex-prev:hover,.post-hover:hover .post-title a,.post-title a:hover,.sidebar.s1 .post-nav li a:hover i,.content .post-nav li a:hover i,.post-related a:hover,.sidebar.s1 .widget_rss ul li a,#footer .widget_rss ul li a,.sidebar.s1 .widget_calendar a,#footer .widget_calendar a,.sidebar.s1 .alx-tab .tab-item-category a,.sidebar.s1 .alx-posts .post-item-category a,.sidebar.s1 .alx-tab li:hover .tab-item-title a,.sidebar.s1 .alx-tab li:hover .tab-item-comment a,.sidebar.s1 .alx-posts li:hover .post-item-title a,#footer .alx-tab .tab-item-category a,#footer .alx-posts .post-item-category a,#footer .alx-tab li:hover .tab-item-title a,#footer .alx-tab li:hover .tab-item-comment a,#footer .alx-posts li:hover .post-item-title a,.comment-tabs li.active a,.comment-awaiting-moderation,.child-menu a:hover,.child-menu .current_page_item > a,.wp-pagenavi a{ color: #fca61b; }.themeform input[type="submit"],.themeform button[type="submit"],.sidebar.s1 .sidebar-top,.sidebar.s1 .sidebar-toggle,#flexslider-featured .flex-control-nav li a.flex-active,.post-tags a:hover,.sidebar.s1 .widget_calendar caption,#footer .widget_calendar caption,.author-bio .bio-avatar:after,.commentlist li.bypostauthor > .comment-body:after,.commentlist li.comment-author-admin > .comment-body:after{ background-color: #fca61b; }.post-format .format-container { border-color: #fca61b; }.sidebar.s1 .alx-tabs-nav li.active a,#footer .alx-tabs-nav li.active a,.comment-tabs li.active a,.wp-pagenavi a:hover,.wp-pagenavi a:active,.wp-pagenavi span.current{ border-bottom-color: #fca61b!important; }.sidebar.s2 .post-nav li a:hover i,
+.sidebar.s2 .widget_rss ul li a,
+.sidebar.s2 .widget_calendar a,
+.sidebar.s2 .alx-tab .tab-item-category a,
+.sidebar.s2 .alx-posts .post-item-category a,
+.sidebar.s2 .alx-tab li:hover .tab-item-title a,
+.sidebar.s2 .alx-tab li:hover .tab-item-comment a,
+.sidebar.s2 .alx-posts li:hover .post-item-title a { color: #3bcfe2; }
+.sidebar.s2 .sidebar-top,.sidebar.s2 .sidebar-toggle,.post-comments,.jp-play-bar,.jp-volume-bar-value,.sidebar.s2 .widget_calendar caption{ background-color: #3bcfe2; }.sidebar.s2 .alx-tabs-nav li.active a { border-bottom-color: #3bcfe2; }
+.post-comments span:before { border-right-color: #3bcfe2; }
+      .search-expand,
+              #nav-topbar.nav-container { background-color: #303030}@media only screen and (min-width: 720px) {
+                #nav-topbar .nav ul { background-color: #303030; }
+              }.is-scrolled #header .nav-container.desktop-sticky,
+              .is-scrolled #header .search-expand { background-color: #303030; background-color: rgba(48,48,48,0.90) }.is-scrolled .topbar-transparent #nav-topbar.desktop-sticky .nav ul { background-color: #303030; background-color: rgba(48,48,48,0.95) }#header { background-color: #363944; }
+@media only screen and (min-width: 720px) {
+  #nav-header .nav ul { background-color: #363944; }
+}
+        .is-scrolled #header #nav-mobile { background-color: #454e5c; background-color: rgba(69,78,92,0.90) }body { background-color: #eaeaea; }
+		.entry-inner h1{ font-size:20px; font-weight:bold;}
+		.entry-inner h2,h3,h4{ font-size:18px; font-weight:bold;}
+</style>
+ 
+
+<link rel="stylesheet" id="hueman-font-awesome-css" href="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/font-awesome.min.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var monsterinsights_frontend = {"js_events_tracking":"true","is_debug_mode":"false","download_extensions":"","inbound_paths":"","home_url":"https:\/\/www.itread01.com","track_download_as":"event","internal_label":"int","hash_tracking":"false"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/frontend.min.js.下載"></script>
+<script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/jquery.js.下載"></script>
+<script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/jsjquery-migrate.min.js.下載"></script>
+<script src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/highlight.js.下載"></script>
+<link rel="stylesheet" type="text/css" href="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/default.css">
+<meta name="generator" content="WordPress 4.8.2">
+<!--[if lt IE 9]>
+<script src="/img/css/js/html5shiv-printshiv.min.js"></script>
+<script src="/img/css/js/selectivizr.js"></script>
+<![endif]-->
+<style>.ios7.web-app-mode.has-fixed header{ background-color: rgba(45,53,63,.88);}</style></head>
+<body data-rsssl="1" class="post-template-default single single-post postid-43193 single-format-standard wp-custom-logo col-2cl full-width topbar-enabled header-desktop-sticky header-mobile-sticky chrome hu-smoothscroll">
+    <div id="wrapper">
+        <header id="header" class="specific-mobile-menu-on one-mobile-menu mobile_menu header-ads-desktop header-ads-mobile topbar-transparent no-header-img fixed-header-on" style="height: 175px; padding-top: 50px;">
+        <nav class="nav-container group mobile-menu mobile-sticky " id="nav-mobile" data-menu-id="header-1">
+  <div class="mobile-title-logo-in-header"><p class="site-title"><a class="custom-logo-link" href="https://www.itread01.com/" rel="home" title="首頁"><img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/logo.png"></a></p>
+                </div>
+        <div class="ham__navbar-toggler-two collapsed" title="Menu" aria-expanded="false">
+          <div class="ham__navbar-span-wrapper">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+          </div>
+        </div>
+            
+      <div class="nav-text"></div>
+      <div class="nav-wrap container">
+                  <ul class="nav container-inner group mobile-search">
+                            <li>
+                  <form class="searchform themeform" onsubmit="return searchKw(this)">
+	<div>
+		<input type="text" name="kw" class="search" onblur="if(this.value==&#39;&#39;)this.value=&#39;輸入關鍵字後搜尋&#39;;" onfocus="if(this.value==&#39;輸入關鍵字後搜尋&#39;)this.value=&#39;&#39;;" value="輸入關鍵字後搜尋">
+	</div>
+</form>    
+<script>function searchKw(c){var b=c.getElementsByTagName("input")[0],a=b.value.replace(/^\s+|\s+$/g,"");a=a.replace(/['"]/g,"");location.href="https://www.itread01.com/search/"+encodeURIComponent(a)+"";return false};</script>            </li>
+                      </ul>
+                <ul id="menu-top" class="nav container-inner group">
+                 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/">首頁</a></li>
+				<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/%E7%A7%91%E6%8A%80/">科技</a></li>
+						  <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/info/">程式語言</a></li>
+ 
+</ul>      </div>
+</nav><!--/#nav-topbar-->  
+        <nav class="nav-container group desktop-menu desktop-sticky sticky-visible" id="nav-topbar" data-menu-id="header-2" style="max-width: 1903px;">
+    <div class="nav-text"></div>
+  <div class="topbar-toggle-down">
+    <i class="fas fa-angle-double-down" aria-hidden="true" data-toggle="down" title="展開功能表清單"></i>
+    <i class="fas fa-angle-double-up" aria-hidden="true" data-toggle="up" title="折疊功能表清單"></i>
+  </div>
+  <div class="nav-wrap container">
+    <ul id="menu-footer" class="nav container-inner group"> 
+    <li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/" rel="nofollow">首頁</a></li>
+<li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/study/mysql-tutorial.html">MySQL教學</a></li>
+<li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/t/%E7%B6%B2%E7%AB%99%E6%8A%80%E5%B7%A7/1/">網站技巧</a></li>
+<li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/t/%E7%B6%B2%E8%B7%AF%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88/1/">網路程式設計</a></li>
+<li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/t/%E8%BB%9F%E9%AB%94%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88/1/">軟體程式設計</a></li>
+<li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/t/%E8%B3%87%E6%96%99%E5%BA%AB/1/">資料庫</a></li>
+<li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/t/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1/1/">作業系統</a></li>
+<li id="menu-item-1907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1907"><a href="https://www.itread01.com/t/%E6%8C%87%E4%BB%A4%E7%A2%BC%E5%B0%88%E6%AC%84/1/">其它</a></li>
+ 
+</ul>  </div>
+      <div id="topbar-header-search" class="container">
+      <div class="container-inner">
+        <div class="toggle-search"><i class="fas fa-search"></i></div>
+        <div class="search-expand">
+          <div class="search-expand-inner"><form class="searchform themeform" onsubmit="return searchKw(this)">
+	<div>
+		<input type="text" class="search" name="kw" onblur="if(this.value==&#39;&#39;)this.value=&#39;輸入關鍵字後搜尋&#39;;" onfocus="if(this.value==&#39;輸入關鍵字後搜尋&#39;)this.value=&#39;&#39;;" value="輸入關鍵字後搜尋">
+	</div>
+</form></div>
+        </div>
+      </div><!--/.container-inner-->
+    </div><!--/.container-->
+  
+</nav><!--/#nav-topbar-->  
+  <div class="container group">
+        <div class="container-inner">
+
+                    <div class="group pad central-header-zone">
+                  <div class="logo-tagline-group">
+                                        <p class="site-title"><a class="custom-logo-link" href="https://www.itread01.com/" rel="home"><img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/logo.png"></a></p>
+                                                        </div>
+
+                                        <div id="header-widgets">
+                          <div id="custom_html-2" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!-- /109765683/728_Banner -->
+ </div></div>                      </div><!--/#header-ads-->
+                                </div>
+                <nav class="nav-container group desktop-menu " id="nav-header" data-menu-id="header-3">
+    <div class="nav-text"><!-- put your mobile menu text here --></div>
+  <div class="nav-wrap container">
+        <ul id="menu-top-1" class="nav container-inner group">
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/">首頁</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/%E7%A7%91%E6%8A%80/">科技</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/info/">程式語言</a></li>
+</ul>  </div>
+</nav><!--/#nav-header-->      
+    </div><!--/.container-inner-->
+      </div><!--/.container-->
+</header><!--/#header-->        
+        <div class="container" id="page">
+            <div class="container-inner">
+
+                                <div class="main" style="">
+                    <div class="main-inner group">
+                        
+              <section class="content">
+              <div class="page-title pad group">
+          	    		<ul class="meta-single group">
+    			<li class="category"><a href="https://www.itread01.com/infolist/%E5%85%B6%E4%BB%96/1/">其他</a></li>
+    			    		</ul>
+
+    	
+    </div><!--/.page-title-->
+          <div class="pad group">
+              <article class="post-43193 post type-post status-publish format-standard has-post-thumbnail hentry category-news tag-stripe tag-32305 tag-32306 tag-4550 tag-5237 tag-31545 tag-6260">
+    <div class="post-inner group">
+
+      <h1 class="post-title entry-title">奇異值分解(SVD)原理與在降維中的應用</h1>
+<p class="post-byline"><span class="vcard author">
+     <span class="fn"><a href="https://www.itread01.com/infolist/%E5%85%B6%E4%BB%96/1/">其他</a></span>
+   </span> ·
+                            發表 <time class="published" datetime="2018-12-20">2018-12-20</time>
+             
+               </p>
+               <ins id="scupio-sc-4995-17811-847678" class="scupioadslot" style="display: inline-block; width: 100%; height: 100px; position: relative;" data-sca-pub="lRIJBAgyQA==" data-sca-web="4995" data-sca-category="17" data-sca-cid="17811" data-sca-slot-type="PRA" data-sca-status="callback" undefined="0"><iframe name="scupioadframe" marginwidth="0" marginheight="0" frameborder="0" id="scupio-sc-4995-17811-847678_frame" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad.html" style="box-sizing: content-box; overflow: hidden; border: 0px; padding: 0px; margin: 0px; width: 100%; height: 100px; display: none;"></iframe><span id="viewability_detector_17811" style="position: absolute; z-index: -99999; background-color: transparent; left: 50%; top: 50%; width: 1px; height: 1px;"></span><ins class="scupioadslot" data-sca-pub="lRIJBAgyQA==" data-sca-web="4995" data-sca-category="17" data-sca-cid="17812" data-sca-slot-type="STA" data-sca-status="done" undefined="3" style="display: inline-block; width: 100%; height: 100px; margin: auto; position: relative;"><iframe name="scupioadframe" marginwidth="0" marginheight="0" frameborder="0" id="sc-1585704432886-253526179398_frame" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad(1).html" style="box-sizing: content-box; overflow: hidden; border: 0px; padding: 0px; margin: 0px; width: 100%; height: 100px;"></iframe><span id="viewability_detector_17812" style="position: absolute; z-index: -99999; background-color: transparent; left: 50%; top: 50%; width: 1px; height: 1px;"></span></ins></ins>
+<script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad.js.下載"></script>
+<script>
+(function(s, c, u, p, i, o, a, d) {
+    'use strict';
+    var z=function(t,e,r){var a,n=document.createElement('ins'),s=n.style;for(a in n.className='scupioadslot',r&&(n.id=r),t)t.hasOwnProperty(a)&&(s[a]=t[a]);for(a in e)e.hasOwnProperty(a)&&n.setAttribute('data-sca-'+a,e[a]);return n};
+    (d = s.Scupioads = s.Scupioads || []).push({
+        id: u,
+        callback: function() {
+            p = c.getElementById(u);
+            i = p.style;
+            o = 'inline-block';
+            p.appendChild(z({
+                display: o,
+                width: '100%',
+                height: '100px',
+                margin: 'auto'
+            }, {
+                'pub': 'lRIJBAgyQA==',
+                'web': '4995',
+                'category': '17',
+                'cid': '17812',
+                'slot-type': 'STA'
+            }));
+            i.width = '100%';
+            i.height = '100px';
+            i.display = o;
+        }
+    });
+    setTimeout(function(){if(!s.Scupioads.init)for(i=d.length-1;0<=i;i--)if(d[i].id===u){d[i].callback(),d[i].callback=function(){};break}},1e3);
+})(window, document, 'scupio-sc-4995-17811-847678');
+</script>
+      
+      <div class="clear"></div>
+ 
+      <div class="entry themeform share">
+        <div class="entry-inner">
+		<div id="content_views" class="markdown_views prism-dracula">
+							
+							
+							<p>奇異值分解(Singular Value Decomposition，以下簡稱SVD)是在機器學習領域廣泛應用的演算法，它不光可以用於降維演算法中的特徵分解，還可以用於推薦系統，以及自然語言處理等領域。是很多機器學習演算法的基石。本文就對SVD的原理做一個總結，並討論在在PCA降維演算法中是如何運用運用SVD的。</p>
+<ol>
+<li>回顧特徵值和特徵向量</li>
+</ol>
+<p>我們首先回顧下特徵值和特徵向量的定義如下：</p>
+<pre class="hljs ini"><code><span class="hljs-attr">Ax</span>=λx
+</code></pre>
+<p>其中A是一個n×n的矩陣，x是一個n維向量，則我們說λ是矩陣A的一個特徵值，而x是矩陣A的特徵值λ所對應的特徵向量。</p>
+<p>求出特徵值和特徵向量有什麼好處呢？ 就是我們可以將矩陣A特徵分解。如果我們求出了矩陣A的n個特徵值λ1≤λ2≤…≤λn,以及這n個特徵值所對應的特徵向量{w1,w2,…wn}，，如果這n個特徵向量線性無關，那麼矩陣A就可以用下式的特徵分解表示：</p>
+<pre class="hljs ini"><code><span class="hljs-attr">A</span>=WΣW−<span class="hljs-number">1</span>
+</code></pre>
+<p>其中W是這n個特徵向量所張成的n×n維矩陣，而Σ為這n個特徵值為主對角線的n×n維矩陣。</p>
+<p>一般我們會把W的這n個特徵向量標準化，即滿足||wi||2=1, 或者說wTiwi=1，此時W的n個特徵向量為標準正交基，滿足WTW=I，即WT=W−1, 也就是說W為酉矩陣。</p>
+<p>這樣我們的特徵分解表示式可以寫成</p>
+<pre class="hljs ini"><code><span class="hljs-attr">A</span>=WΣWT
+</code></pre>
+<p>注意到要進行特徵分解，矩陣A必須為方陣。那麼如果A不是方陣，即行和列不相同時，我們還可以對矩陣進行分解嗎？答案是可以，此時我們的SVD登場了。</p>
+<ol start="2">
+<li>SVD的定義</li>
+</ol>
+<p>SVD也是對矩陣進行分解，但是和特徵分解不同，SVD並不要求要分解的矩陣為方陣。假設我們的矩陣A是一個m×n的矩陣，那麼我們定義矩陣A的SVD為：</p>
+<pre class="hljs ini"><code><span class="hljs-attr">A</span>=UΣVT
+</code></pre>
+<p>其中U是一個m×m的矩陣，Σ是一個m×n的矩陣，除了主對角線上的元素以外全為0，主對角線上的每個元素都稱為奇異值，V是一個n×n的矩陣。U和V都是酉矩陣，即滿足UTU=I,VTV=I。下圖可以很形象的看出上面SVD的定義：</p>
+<p><img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111091716492.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+<p>那麼我們如何求出SVD分解後的U,Σ,V這三個矩陣呢？</p>
+<p>如果我們將A的轉置和A做矩陣乘法，那麼會得到n×n的一個方陣ATA。既然ATA是方陣，那麼我們就可以進行特徵分解，得到的特徵值和特徵向量滿足下式：</p>
+<pre class="hljs"><code>(ATA)vi=λivi
+</code></pre>
+<p>這樣我們就可以得到矩陣ATA的n個特徵值和對應的n個特徵向量v了。將ATA的所有特徵向量張成一個n×n的矩陣V，就是我們SVD公式裡面的V矩陣了。一般我們將V中的每個特徵向量叫做A的右奇異向量。</p>
+<p>如果我們將A和A的轉置做矩陣乘法，那麼會得到m×m的一個方陣AAT。既然AAT是方陣，那麼我們就可以進行特徵分解，得到的特徵值和特徵向量滿足下式：</p>
+<pre class="hljs"><code>(AAT)ui=λiui
+</code></pre>
+<p>這樣我們就可以得到矩陣AAT的m個特徵值和對應的m個特徵向量u了。將AAT的所有特徵向量張成一個m×m的矩陣U，就是我們SVD公式裡面的U矩陣了。一般我們將U中的每個特徵向量叫做A的左奇異向量。</p>
+<p>U和V我們都求出來了，現在就剩下奇異值矩陣Σ沒有求出了。由於Σ除了對角線上是奇異值其他位置都是0，那我們只需要求出每個奇異值σ就可以了。</p>
+<p>我們注意到:</p>
+<pre class="hljs ini"><code><span class="hljs-attr">A</span>=UΣVT⇒AV=UΣVTV⇒AV=UΣ⇒Avi=σiui⇒σi=Avi/ui
+</code></pre>
+<p>這樣我們可以求出我們的每個奇異值，進而求出奇異值矩陣Σ。</p>
+<p>上面還有一個問題沒有講，就是我們說ATA的特徵向量組成的就是我們SVD中的V矩陣，而AAT的特徵向量組成的就是我們SVD中的U矩陣，這有什麼根據嗎？這個其實很容易證明，我們以V矩陣的證明為例。</p>
+<pre class="hljs ini"><code><span class="hljs-attr">A</span>=UΣVT⇒AT=VΣTUT⇒ATA=VΣTUTUΣVT=VΣ<span class="hljs-number">2</span>VT
+</code></pre>
+<p>上式證明使用了:UTU=I,ΣTΣ=Σ2。可以看出ATA的特徵向量組成的的確就是我們SVD中的V矩陣。類似的方法可以得到AAT的特徵向量組成的就是我們SVD中的U矩陣。</p>
+<p>進一步我們還可以看出我們的特徵值矩陣等於奇異值矩陣的平方，也就是說特徵值和奇異值滿足如下關係：</p>
+<pre class="hljs"><code>σi=λi−−√
+</code></pre>
+<p>這樣也就是說，我們可以不用σi=Avi/ui來計算奇異值，也可以通過求出ATA的特徵值取平方根來求奇異值。</p>
+<ol start="3">
+<li>SVD計算舉例</li>
+</ol>
+<p>裡我們用一個簡單的例子來說明矩陣是如何進行奇異值分解的。我們的矩陣A定義為：</p>
+<p><img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111092632945.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+<p>我們首先求出ATA和AAT<br>
+<img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111092641996.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+<p>進而求出ATA的特徵值和特徵向量：</p>
+<p><img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111092700481.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+<p>接著求AAT的特徵值和特徵向量：<br>
+<img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111092733255.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+
+<p>利用Avi=σiui,i=1,2求奇異值：</p>
+<p><img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111092743794.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+<p>當然，我們也可以用σi=λi−−√直接求出奇異值為3–√和1.</p>
+<p>最終得到A的奇異值分解為：</p>
+<p><img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111092751486.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+<ol start="4">
+<li>SVD的一些性質</li>
+</ol>
+<p>上面幾節我們對SVD的定義和計算做了詳細的描述，似乎看不出我們費這麼大的力氣做SVD有什麼好處。那麼SVD有什麼重要的性質值得我們注意呢？</p>
+<p>對於奇異值,它跟我們特徵分解中的特徵值類似，在奇異值矩陣中也是按照從大到小排列，而且奇異值的減少特別的快，在很多情況下，前10%甚至1%的奇異值的和就佔了全部的奇異值之和的99%以上的比例。也就是說，我們也可以用最大的k個的奇異值和對應的左右奇異向量來近似描述矩陣。也就是說：</p>
+<pre class="hljs"><code>Am×n=Um×mΣm×nVTn×n≈Um×kΣk×kVTk×n
+</code></pre>
+<p>其中k要比n小很多，也就是一個大的矩陣A可以用三個小的矩陣Um×k,Σk×k,VTk×n來表示。如下圖所示，現在我們的矩陣A只需要灰色的部分的三個小矩陣就可以近似描述了。<br>
+<img src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/20181111091740262.png" alt="在這裡插入圖片描述" referrerpolicy="no-referrer" class="img-fluid"></p>
+<p>由於這個重要的性質，SVD可以用於PCA降維，來做資料壓縮和去噪。也可以用於推薦演算法，將使用者和喜好對應的矩陣做特徵分解，進而得到隱含的使用者需求來做推薦。同時也可以用於NLP中的演算法，比如潛在語義索引（LSI）。下面我們就對SVD用於PCA降維做一個介紹。</p>
+<ol start="5">
+<li>SVD用於PCA</li>
+</ol>
+<p>在主成分分析（PCA）原理總結中，我們講到要用PCA降維，需要找到樣本協方差矩陣XTX的最大的d個特徵向量，然後用這最大的d個特徵向量張成的矩陣來做低維投影降維。可以看出，在這個過程中需要先求出協方差矩陣XTX，當樣本數多樣本特徵數也多的時候，這個計算量是很大的。</p>
+<p>注意到我們的SVD也可以得到協方差矩陣XTX最大的d個特徵向量張成的矩陣，但是SVD有個好處，有一些SVD的實現演算法可以不求先求出協方差矩陣XTX，也能求出我們的右奇異矩陣V。也就是說，我們的PCA演算法可以不用做特徵分解，而是做SVD來完成。這個方法在樣本量很大的時候很有效。實際上，scikit-learn的PCA演算法的背後真正的實現就是用的SVD，而不是我們我們認為的暴力特徵分解。</p>
+<p>另一方面，注意到PCA僅僅使用了我們SVD的右奇異矩陣，沒有使用左奇異矩陣，那麼左奇異矩陣有什麼用呢？</p>
+<p>假設我們的樣本是m×n的矩陣X，如果我們通過SVD找到了矩陣XXT最大的d個特徵向量張成的m×d維矩陣U，則我們如果進行如下處理：</p>
+<pre class="hljs"><code>X′d×n=UTd×mXm×n
+</code></pre>
+<p>可以得到一個d×n的矩陣X‘,這個矩陣和我們原來的m×n維樣本矩陣X相比，行數從m減到了k，可見對行數進行了壓縮。也就是說，左奇異矩陣可以用於行數的壓縮。相對的，右奇異矩陣可以用於列數即特徵維度的壓縮，也就是我們的PCA降維。</p>
+<ol start="6">
+<li>SVD小結</li>
+</ol>
+<p>SVD作為一個很基本的演算法，在很多機器學習演算法中都有它的身影，特別是在現在的大資料時代，由於SVD可以實現並行化，因此更是大展身手。SVD的原理不難，只要有基本的線性代數知識就可以理解，實現也很簡單因此值得仔細的研究。當然，SVD的缺點是分解出的矩陣解釋性往往不強，有點黑盒子的味道，不過這不影響它的使用。</p>
+
+
+
+            </div>
+						
+        
+	 <center><ins id="scupio-sc-4995-17522-26274" class="scupioadslot" style="display: inline-block; width: 300px; height: 250px; position: relative;" data-sca-pub="lRIJBAgyQA==" data-sca-web="4995" data-sca-category="17" data-sca-cid="17522" data-sca-slot-type="PRA" data-sca-status="callback" undefined="1"><iframe name="scupioadframe" marginwidth="0" marginheight="0" frameborder="0" id="scupio-sc-4995-17522-26274_frame" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad(2).html" style="box-sizing: content-box; overflow: hidden; border: 0px; padding: 0px; margin: 0px; width: 300px; height: 250px; display: none;"></iframe><span id="viewability_detector_17522" style="position: absolute; z-index: -99999; background-color: transparent; left: 50%; top: 50%; width: 1px; height: 1px;"></span><ins class="scupioadslot" data-sca-pub="lRIJBAgyQA==" data-sca-web="4995" data-sca-category="17" data-sca-cid="17523" data-sca-slot-type="STA" data-sca-status="done" undefined="4" style="display: inline-block; width: 300px; height: 250px; margin: auto; position: relative;"><iframe name="scupioadframe" marginwidth="0" marginheight="0" frameborder="0" id="sc-1585704432889-362972721592_frame" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad(3).html" style="box-sizing: content-box; overflow: hidden; border: 0px; padding: 0px; margin: 0px; width: 300px; height: 250px;"></iframe><span id="viewability_detector_17523" style="position: absolute; z-index: -99999; background-color: transparent; left: 50%; top: 50%; width: 1px; height: 1px;"></span></ins></ins>
+<script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad.js.下載"></script>
+<script>
+(function(s, c, u, p, i, o, a, d) {
+    'use strict';
+    var z=function(t,e,r){var a,n=document.createElement('ins'),s=n.style;for(a in n.className='scupioadslot',r&&(n.id=r),t)t.hasOwnProperty(a)&&(s[a]=t[a]);for(a in e)e.hasOwnProperty(a)&&n.setAttribute('data-sca-'+a,e[a]);return n};
+    (d = s.Scupioads = s.Scupioads || []).push({
+        id: u,
+        callback: function() {
+            p = c.getElementById(u);
+            i = p.style;
+            o = 'inline-block';
+            p.appendChild(z({
+                display: o,
+                width: '300px',
+                height: '250px',
+                margin: 'auto'
+            }, {
+                'pub': 'lRIJBAgyQA==',
+                'web': '4995',
+                'category': '17',
+                'cid': '17523',
+                'slot-type': 'STA'
+            }));
+            i.width = '300px';
+            i.height = '250px';
+            i.display = o;
+        }
+    });
+    setTimeout(function(){if(!s.Scupioads.init)for(i=d.length-1;0<=i;i--)if(d[i].id===u){d[i].callback(),d[i].callback=function(){};break}},1e3);
+})(window, document, 'scupio-sc-4995-17522-26274');
+</script></center>
+          <nav class="pagination group">
+                      </nav><!--/.pagination-->
+        </div>
+
+    
+        <div class="clear"></div>
+      </div><!--/.entry-->
+
+    </div><!--/.post-inner-->
+  </article><!--/.post-->
+
+<div class="clear"></div>
+
+<p class="post-tags"><span>標籤：</span>  </p>
+
+<center>
+</center>
+
+
+<h4 class="heading">
+	<i class="far fa-hand-point-right"></i>您可能也會喜歡…</h4>
+
+ <ul class="lrelated-posts group">
+		 	<li><a href="https://www.itread01.com/content/1545298204.html" target="_blank">奇異值分解(SVD)原理與在降維中的應用</a> </li>
+    	<li><a href="https://www.itread01.com/content/1547695806.html" target="_blank">奇異值分解(SVD)原理詳解及推導 （轉）</a> </li>
+    	<li><a href="https://www.itread01.com/content/1545398548.html" target="_blank">機器學習實戰（Machine Learning in Action）學習筆記————10.奇異值分解(SVD)原理、基於協同過濾的推薦引擎、數據降維</a> </li>
+    	<li><a href="https://www.itread01.com/content/1545390549.html" target="_blank">機器學習實戰（Machine Learning in Action）學習筆記————10.奇異值分解(SVD)原理、基於協同過濾的推薦引擎、資料降維</a> </li>
+    	<li><a href="https://www.itread01.com/content/1545382991.html" target="_blank">奇異值分解(SVD)原理詳解及推導</a> </li>
+    	<li><a href="https://www.itread01.com/content/1544938682.html" target="_blank">奇異值分解（SVD）原理</a> </li>
+    	<li><a href="https://www.itread01.com/content/1541334247.html" target="_blank">奇異值分解(SVD)原理詳解</a> </li>
+    	<li><a href="https://www.itread01.com/content/1538753976.html" target="_blank">奇異值分解(SVD)原理及應用</a> </li>
+    	<li><a href="https://www.itread01.com/content/1565611802.html" target="_blank">差分陣列原理與其字首和的應用</a> </li>
+    	<li><a href="https://www.itread01.com/content/1546530695.html" target="_blank">B樹和B+樹原理及在索引中的應用</a> </li>
+    	<li><a href="https://www.itread01.com/content/1549593727.html" target="_blank">奇異值分解SVD計算原理及JAVA程式碼</a> </li>
+    	<li><a href="https://www.itread01.com/content/1547582226.html" target="_blank">矩陣的奇異值分解（SVD）（理論）</a> </li>
+    	<li><a href="https://www.itread01.com/content/1547231251.html" target="_blank">奇異值的物理意義是什麼？強大的矩陣奇異值分解(SVD)及其應用</a> </li>
+    	<li><a href="https://www.itread01.com/content/1531244303.html" target="_blank">[數學] 奇異值分解SVD的理解與應用</a> </li>
+    	<li><a href="https://www.itread01.com/content/1579439222.html" target="_blank">數學基礎系列(六)----特徵值分解和奇異值分解(SVD)</a> </li>
+     
+</ul><!--/.post-related-->
+
+
+
+        </div><!--/.pad-->
+        </section><!--/.content-->
+          
+
+	<div class="sidebar s1 collapsed" data-position="right" data-layout="col-2cl" data-sb-id="s1" style="transform: translateZ(0px);">
+
+		<a class="sidebar-toggle" title="延伸側邊欄位" style="transform: translate(0px, 0px);"><i class="fas icon-sidebar-toggle"></i></a>
+
+		<div class="sidebar-content" style="transform: translate(0px, 0px);">
+
+			  			<div class="sidebar-top group">
+                        <p>贊助商廣告</p>
+             
+           			</div>
+		 
+				<ul class="post-nav group">
+      
+ 
+		<li class="previous"> </li>
+  
+  
+		 <li class="next">  </li>
+ 
+	</ul>
+
+<div id="custom_html-3" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!-- /109765683/300x250 -->
+<ins id="scupio-sc-4995-17521-400386" class="scupioadslot" style="display: inline-block; width: 300px; height: 250px; position: relative;" data-sca-pub="lRIJBAgyQA==" data-sca-web="4995" data-sca-category="17" data-sca-cid="17521" data-sca-slot-type="PRA" data-sca-status="callback" undefined="2"><iframe name="scupioadframe" marginwidth="0" marginheight="0" frameborder="0" id="scupio-sc-4995-17521-400386_frame" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad(4).html" style="box-sizing: content-box; overflow: hidden; border: 0px; padding: 0px; margin: 0px; width: 300px; height: 250px; display: none;"></iframe><span id="viewability_detector_17521" style="position: absolute; z-index: -99999; background-color: transparent; left: 50%; top: 50%; width: 1px; height: 1px;"></span><ins class="scupioadslot" data-sca-pub="lRIJBAgyQA==" data-sca-web="4995" data-sca-category="17" data-sca-cid="17518" data-sca-slot-type="STA" data-sca-status="done" undefined="5" style="display: inline-block; width: 300px; height: 250px; margin: auto; position: relative;"><iframe name="scupioadframe" marginwidth="0" marginheight="0" frameborder="0" id="sc-1585704433243-28158235475_frame" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad(5).html" style="box-sizing: content-box; overflow: hidden; border: 0px; padding: 0px; margin: 0px; width: 300px; height: 250px;"></iframe><span id="viewability_detector_17518" style="position: absolute; z-index: -99999; background-color: transparent; left: 50%; top: 50%; width: 1px; height: 1px;"></span></ins></ins>
+<script async="" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/ad.js.下載"></script>
+<script>
+(function(s, c, u, p, i, o, a, d) {
+    'use strict';
+    var z=function(t,e,r){var a,n=document.createElement('ins'),s=n.style;for(a in n.className='scupioadslot',r&&(n.id=r),t)t.hasOwnProperty(a)&&(s[a]=t[a]);for(a in e)e.hasOwnProperty(a)&&n.setAttribute('data-sca-'+a,e[a]);return n};
+    (d = s.Scupioads = s.Scupioads || []).push({
+        id: u,
+        callback: function() {
+            p = c.getElementById(u);
+            i = p.style;
+            o = 'inline-block';
+            p.appendChild(z({
+                display: o,
+                width: '300px',
+                height: '250px',
+                margin: 'auto'
+            }, {
+                'pub': 'lRIJBAgyQA==',
+                'web': '4995',
+                'category': '17',
+                'cid': '17518',
+                'slot-type': 'STA'
+            }));
+            i.width = '300px';
+            i.height = '250px';
+            i.display = o;
+        }
+    });
+    setTimeout(function(){if(!s.Scupioads.init)for(i=d.length-1;0<=i;i--)if(d[i].id===u){d[i].callback(),d[i].callback=function(){};break}},1e3);
+})(window, document, 'scupio-sc-4995-17521-400386');
+</script>
+</div></div><div id="text-7" class="widget widget_text">			 
+		</div>
+        
+        <div id="alxtabs-2" class="widget widget_hu_tabs">
+<h3 class="widget-title"></h3>
+<ul class="alx-tabs-nav group tab-count-3"><li class="alx-tab tab-recent active"><a href="https://www.itread01.com/content/1545298204.html#tab-recent-2" title="熱門文章"><i class="far fa-clock"></i></a></li><li class="alx-tab tab-tags"><a href="https://www.itread01.com/content/1545298204.html#tab-tags-2" title="標籤"><i class="fas fa-star"></i> </a></li></ul>
+	<div class="alx-tabs-container">						
+			<ul id="tab-recent-2" class="alx-tab group" style="display: block;">
+								 
+					      
+                  <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298204.html">第十組 分析Mac版本的搜狗輸入法和Mac輸入法（桌面版） </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298206.html">day7-python操作redis、excel </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298206.html">mysql的分頁（不看後悔，一看必懂） </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298208.html">java提標 </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298208.html">IFTTT與Google+是什麼 ifttt怎麼玩 </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298210.html">MySql何時用MyISAM何時用InnoDB（不看後悔，一看必懂） </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298210.html">ant-design-pro彈出框表單設定預設值 </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298211.html">PCI 32 PCI 64和PCI-X，PCI-E圖解差別 </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298212.html">java初體驗作業人 </a></p>
+										</div>
+				</li>
+                
+                
+                 <li>
+					<div class="tab-item-inner group">
+						 						
+                        <p class="tab-item-title"> <a href="https://www.itread01.com/content/1545298213.html">張慧穎    廊坊師範學院資訊科技提高班    十四期 </a></p>
+										</div>
+				</li>
+                
+                
+  	 
+				</ul><!--/.alx-tab-->
+
+			<ul id="tab-tags-2" class="alx-tab group" style="display: none;">
+				<li>
+					<a href="https://www.itread01.com/android/" class="tag-cloud-link tag-link-9 tag-link-position-1" style="font-size: 12.15625pt;">Android</a> 	
+					<a href="https://www.itread01.com/study/itools_download.html" class="tag-cloud-link tag-link-9 tag-link-position-1" style="font-size: 12.15625pt;">iTools</a> 
+					<a href="https://www.itread01.com/mysql/" class="tag-cloud-link tag-link-9 tag-link-position-1" style="font-size: 12.15625pt;">Mysql</a> 
+					<a href="https://www.itread01.com/windows/" class="tag-cloud-link tag-link-9 tag-link-position-1" style="font-size: 12.15625pt;">Windows</a> 
+					<a href="https://www.itread01.com/ios/" class="tag-cloud-link tag-link-9 tag-link-position-1" style="font-size: 12.15625pt;">IOS</a> 
+					<a href="https://www.itread01.com/%E7%A8%8B%E5%BC%8F/" class="tag-cloud-link tag-link-9 tag-link-position-1" style="font-size: 12.15625pt;">程式</a> 
+                   </li>
+			</ul><!--/.alx-tab-->
+
+			</div>
+</div>
+		</div><!--/.sidebar-content-->
+
+	</div><!--/.sidebar-->
+
+	
+
+        </div><!--/.main-inner-->
+      </div><!--/.main-->
+    </div><!--/.container-inner-->
+  </div><!--/.container-->
+    <footer id="footer">
+          <nav class="nav-container group" id="nav-footer" data-menu-id="footer-4" data-menu-scrollable="false">
+                      <!-- <div class="ham__navbar-toggler collapsed" aria-expanded="false">
+          <div class="ham__navbar-span-wrapper">
+            <span class="ham-toggler-menu__span"></span>
+          </div>
+        </div> -->
+        <div class="ham__navbar-toggler-two collapsed" title="Menu" aria-expanded="false">
+          <div class="ham__navbar-span-wrapper">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+          </div>
+        </div>
+                    <div class="nav-text"></div>
+        <div class="nav-wrap">
+          <ul id="menu-top-2" class="nav container group">
+           <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/" rel="nofollow">首頁</a></li>
+		   <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-290"><a href="https://www.itread01.com/study/python-tutorial.html">Python教學</a></li>
+ 
+</ul>        </div>
+      </nav><!--/#nav-footer-->
+    
+    <section class="container" id="footer-bottom">
+      <div class="container-inner">
+
+        <a id="back-to-top" href="https://www.itread01.com/content/1545298204.html#"><i class="fas fa-angle-up"></i></a>
+
+        <div class="pad group">
+
+          <div class="grid one-half">
+                        
+            <div id="copyright">
+                              <p>ITREAD01.COM © 2018. 版權所有。 </p>
+                          </div><!--/#copyright-->
+          </div>
+        </div><!--/.pad-->
+
+      </div><!--/.container-inner-->
+    </section><!--/.container-->
+
+  </footer><!--/#footer-->
+
+</div><!--/#wrapper-->
+
+<!-- Powered by WPtouch: 4.3.27 --><script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/jQuerySharrre.min.js.下載"></script>
+<script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/underscore.min.js.下載"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var HUParams = {"_disabled":[],"SmoothScroll":{"Enabled":true,"Options":{"touchpadSupport":false}},"centerAllImg":"1","timerOnScrollAllBrowsers":"1","extLinksStyle":"1","extLinksTargetExt":"1","extLinksSkipSelectors":{"classes":["btn","button"],"ids":[]},"imgSmartLoadEnabled":"","imgSmartLoadOpts":{"parentSelectors":[".container .content",".container .sidebar","#footer","#header-widgets"],"opts":{"excludeImg":[".tc-holder-img"],"fadeIn_options":100}},"goldenRatio":"1.618","gridGoldenRatioLimit":"350","sbStickyUserSettings":{"desktop":true,"mobile":false},"isWPMobile":"","menuStickyUserSettings":{"desktop":"stick_up","mobile":"stick_up"},"isDevMode":"","ajaxUrl":"https:\/\/www.itread01.com\/?huajax=1","frontNonce":{"id":"HuFrontNonce","handle":"d9125fec3b"},"userStarted":{"with":"with|3.3.27","on":{"date":"2018-03-27 03:41:18.000000","timezone_type":3,"timezone":"UTC"}},"isWelcomeNoteOn":"","welcomeContent":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/scripts.min.js.下載"></script>
+<script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/wp-embed.min.js.下載"></script>
+
+<!--[if lt IE 9]>
+<script src="/img/css/js/respond.js"></script>
+<![endif]-->
+<div style="display:none"><script type="text/javascript" src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/c.js.下載"></script><script src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/z_stat.php" language="JavaScript"></script><script src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/core.php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=1275098034" target="_blank" title="站长统计">站长统计</a>
+0.44371795654297</div>
+
+    <!-- Bootstrap core JavaScript ================================================== -->
+        <script src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/jquery.min.js.下載"></script>
+     
+        <!-- Placed at the end of the document so the pages load faster -->
+        
+
+<script src="./奇異值分解(SVD)原理與在降維中的應用 - IT閱讀_files/highlight.min.js.下載"></script>
+<script>
+function joinUrl(url, concat) {
+  var url1 = url.split('/');
+  var url2 = concat.split('/');
+  var url3 = [ ];
+  for (var i = 0, l = url1.length; i < l; i ++) {
+    if (url1[i] == '..') {
+      url3.pop();
+    } else if (url1[i] == '.') {
+      continue;
+    } else {
+      url3.push(url1[i]);
+    }
+  }
+  for (var i = 0, l = url2.length; i < l; i ++) {
+    if (url2[i] == '..') {
+      url3.pop();
+    } else if (url2[i] == '.') {
+      continue;
+    } else {
+      url3.push(url2[i]);
+    }
+  }
+  return url3.join('/');
+}
+$(document).ready(function() {
+    $('pre').each(function(i, block) {
+        hljs.highlightBlock(block);
+    });
+	var source = $('#source-url').html();
+	if(source.indexOf('segmentfault.com') > 0) {
+		var imgs = $('#main-content').find('img');
+		$.each(imgs, function(index, img) {
+			var data_src = $(img).attr('data-src');
+			data_src = 'https://segmentfault.com' + data_src;
+			console.log(data_src);
+			$(img).attr('src', data_src);
+			// $(img).attr('src', '');
+		});
+	}
+});
+</script></body></html>
